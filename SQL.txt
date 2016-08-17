@@ -1,0 +1,42 @@
+CREATE TABLE CUSTOMER(
+                      CUST_ID INTEGER CHECK(99<CUST_ID AND CUST_ID<10001),
+                      CUST_NAME VARCHAR(20),
+                      ANNUAL_REVENUE INTEGER DEFAULT '20000',
+                      CUST_TYPE VARCHAR(20) CHECK(CUST_TYPE='MANUFACTURER' OR CUST_TYPE='WHOLESALER' OR CUST_TYPE='RETAILOR'),
+                      PRIMARY KEY(CUST_ID)
+                      );
+
+INSERT INTO CUSTOMER VALUES(
+                   100,'REVATHI',1000000,'MANUFACTURER'
+                  );
+
+CREATE TABLE CITY(
+                  
+                  CITY_NAME VARCHAR(20) PRIMARY KEY,
+                  POPULATION INT    
+		);
+
+INSERT INTO CITY VALUES('LONDON',100000000);
+
+CREATE TABLE TRUCK(
+                  
+                  TRUCK_NO INT PRIMARY KEY,
+                  DRIVER_NAME VARCHAR(20)    
+		);
+
+CREATE TABLE SHIPMENT(
+                      SHIPMENT_NO INT,
+                      CUST_ID INT ,
+                      WEIGHT NUMERIC(10,4),
+                      TRUCK_NO INT ,
+                      DESTINATION VARCHAR(20) ,
+                      SHIP_DATE DATE,
+                      FOREIGN KEY(CUST_ID) REFERENCES CUSTOMER,
+		      FOREIGN KEY(TRUCK_NO) REFERENCES TRUCK,
+                      FOREIGN KEY(DESTINATION) REFERENCES CITY
+);
+
+INSERT INTO SHIPMENT VALUES(100,100,154.11,100,'LONDON',NULL)
+
+
+COPY (SELECT * FROM CUSTOMER)TO 'D:/GNS.TXT'

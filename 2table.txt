@@ -1,0 +1,35 @@
+create table Customer
+(	Cust_id integer primary key,
+	CustomerName varchar(20),
+	Annual_review float default 20000,
+	Cust_type varchar(20),
+	check (cust_id>=100 and cust_id<=1000),
+	check (Cust_type in ('manufacturer', 'wholesaler', 'retailer'))
+);
+create table Truck
+(
+	Truck_id int primary key,
+	Driver_name varchar(20)	
+);
+create table City
+(
+
+	City_name varchar(20)	 primary key,
+	population int
+);
+
+create table Shipment
+(
+	Shipment_id int primary key,
+	Cust_Id int,
+	
+	Weight int default 10,
+	Truck_id int,
+	Destination varchar(20),
+	Ship_date date,
+	foreign key (Cust_Id) REFERENCES Customer on delete cascade,
+	foreign key (Truck_id) REFERENCES Truck on delete set null,
+	foreign key (Destination) REFERENCES City on delete set null
+
+	
+);

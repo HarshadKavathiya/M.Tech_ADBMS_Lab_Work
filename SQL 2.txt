@@ -1,0 +1,36 @@
+create table CUSTOMER(	CUST_ID integer primary key,
+			CUST_NAME varchar(20),
+			ANNUAL_REVENUE float default 20000,
+			CUST_TYPE varchar(20),
+			check (CUST_ID>=100 and CUST_ID<=1000),
+			check (CUST_TYPE in ('manufacturer','wholesaler','retailer'))
+			);
+
+
+create table TRUCK (
+			TRUCK_ID integer primary key, 
+			DRIVER_NAME varchar(20)
+		);
+
+create table CITY (
+			CITY_NAME varchar(20) primary key, 
+			POPULATION bigint 
+		  );
+
+
+
+create table SHIPMENT (	
+
+			SHIPMENT_ID integer primary key,
+			CUST_ID integer,
+			WEIGHT integer default 10,
+			TRUCK_ID integer,
+			DESTINATION varchar(20),
+			SHIP_DATE date, 
+			check (WEIGHT<=1000),
+			foreign key (CUST_ID) REFERENCES CUSTOMER on delete cascade,
+			foreign key (TRUCK_ID) REFERENCES TRUCK on delete set null,
+			foreign key (DESTINATION) REFERENCES CITY on delete set null
+			
+			);
+

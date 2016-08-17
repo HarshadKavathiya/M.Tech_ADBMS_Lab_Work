@@ -1,0 +1,132 @@
+create table Customer
+(	Cust_id integer primary key,
+	CustomerName varchar(20),
+	Annual_revenue float default 20000,
+	Cust_type varchar(20),
+	check (cust_id>=100 and cust_id<=1000),
+	check (Cust_type in ('manufacturer', 'wholesaler', 'retailer'))
+);
+create table Truck
+(
+	Truck_id int primary key,
+	Driver_name varchar(20)	
+);
+create table City
+(
+
+	City_name varchar(20)	 primary key,
+	population int
+);
+
+create table Shipment
+(
+	Shipment_id int primary key,
+	Cust_Id int,
+	
+	Weight float default 10,
+	Truck_id int,
+	Destination varchar(20),
+	Ship_date date,
+	foreign key (Cust_Id) REFERENCES Customer on delete cascade,
+	foreign key (Truck_id) REFERENCES Truck on delete set null,
+	foreign key (Destination) REFERENCES City on delete set null
+
+	
+);
+
+
+1.
+select distinct c.Cust_name from Customer c, Shipment s
+where s.destination ='Sioux City' and c.Cust_Id=s.Cust_Id
+
+2.
+select distinct s.Destination from Customer c, Shipment s
+where c.Annual_revenue<=100000 and c.Cust_Id=s.Cust_Id
+
+
+3.
+select distinct c.City_name,c.population from City c, Shipment s
+where s.Destination=c.City_name and s.weight>100
+
+4.
+select distinct s.Destination from Customer c, Shipment s
+where c.Annual_revenue>5000000 and c.Cust_Id=s.Cust_Id and s.weight<1
+
+
+5.
+select distinct s.Destination from Customer c, Shipment s
+where c.Annual_revenue>5000000 and c.Cust_Id=s.Cust_Id and ( s.weight<1 or s.Destination='San Fransisco')
+
+
+6.
+
+select distinct t.Driver_name from Truck t, Shipment s, Customer cs, City c
+where cs.Annual_revenue>2000000 and t.Truck_Id=s.Truck_Id and c.City_name=s.Destination and cs.Cust_Id = s.Cust_id and c.population>100000
+
+
+7.
+
+select distinct s.Destination from Customer c, Shipment s
+where c.Annual_revenue>1500000 and c.Cust_Id=s.Cust_Id 
+
+8.
+select distinct t.Driver_name from Truck t, Shipment s
+where s.weight>100 and t.Truck_Id=s.Truck_Id 
+
+9.
+select distinct c.CustomerName,c.Annual_revenue from Customer c, Shipment s
+where c.Cust_Id=s.Cust_Id  and s.weight>100
+
+10.
+
+
+select distinct c.CustomerName,c.Annual_revenue from Customer c, Shipment s, Truck t
+where c.Cust_Id=s.Cust_Id  and s.Truck_id =t.Truck_id and t.Driver_name='Jensen'
+
+
+15.
+select distinct c.City_name from City c, Shipment s
+where s.Cust_Id=311 and s.Destination=c.City_name and c.population>=100000 and s.weight=100
+
+16.
+
+select Truck_id from Truck 
+where Driver_name='Jake Stinson' and Truck_Id not in
+(select t.Truck_Id from Truck t, Shipment s
+where s.Destination='Denver' and s.Truck_id=t.Truck_Id)
+
+17.
+select distinct c.CustomerName,c.Annual_revenue from Customer c, Shipment s, City ct
+where c.Cust_Id=s.Cust_Id  and s.weight<1 and ct.City_name=s.Destination and ct.population<10000
+
+18.
+a.
+create view Customer_1M
+as select * from Customer where Annual_revenue<=1000000
+
+b.
+create view Customer_Btw1Mn5M
+as select * from Customer where Annual_revenue>=1000000 and Annual_revenue=<5000000
+
+c.
+create view Customer_5M
+as select * from Customer where Annual_revenue>5000000
+
+19
+a.
+
+select distinct t.Driver_name from Truck t, Shipment s, Customer_5M cs
+where t.Truck_Id=s.Truck_Id and s.Destination='Los Angels' and cs.Cust_Id = s.Cust_id 
+
+b.
+
+select distinct c.city_name ,c.population from  Shipment s, Customer_Btw1Mn5M cs,City c
+where c.city_name=s.Destination and cs.Cust_Id = s.Cust_id 
+
+c.
+
+select distinct t.Driver_name,c.city_name ,c.population from Truck t, Shipment s, Customer_1M cs, City c
+where t.Truck_Id=s.Truck_Id and c.City_name=s.Destination and cs.Cust_Id = s.Cust_id 
+
+
+

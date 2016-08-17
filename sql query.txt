@@ -1,0 +1,28 @@
+1.
+
+select distinct c.cust_name from customer c, shipment s
+where s.destination ='Sioux City' and c.cust_Id=s.cust_Id;
+
+
+2.
+
+select distinct s.Destination from Customer c, Shipment s
+where c.Annual_revenue<=100000 and c.Cust_Id=s.Cust_Id
+
+3.
+
+select distinct s.Destination from Customer c, Shipment s
+where c.Annual_revenue>5000000 and c.Cust_Id=s.Cust_Id and s.weight<1
+
+
+
+
+
+
+
+
+
+
+
+
+
